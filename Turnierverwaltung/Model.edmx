@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SoccerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="ClubPk" />
+          </Key>
+          <Property Name="ClubPk" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="GroupFk" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GamePk" />
+          </Key>
+          <Property Name="GamePk" Type="int" Nullable="false" />
+          <Property Name="HomeClubFk" Type="int" Nullable="false" />
+          <Property Name="GuestClubFk" Type="int" Nullable="false" />
+          <Property Name="HomeResult" Type="int" />
+          <Property Name="GuestResult" Type="int" />
+          <Property Name="DateTime" Type="smalldatetime" />
+          <Property Name="Played" Type="bit" Nullable="false" />
+          <Property Name="UserFk" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupPk" />
+          </Key>
+          <Property Name="GroupPk" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TournamentFk" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tournment">
+          <Key>
+            <PropertyRef Name="TournamentPk" />
+          </Key>
+          <Property Name="TournamentPk" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserPk" />
+          </Key>
+          <Property Name="UserPk" Type="int" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Club_Group">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="Club" Type="Self.Club" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupPk" />
+            </Principal>
+            <Dependent Role="Club">
+              <PropertyRef Name="GroupFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_GuestClub">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="GuestClubFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_HomeClub">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="HomeClubFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="UserFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Tournment">
+          <End Role="Tournment" Type="Self.Tournment" Multiplicity="1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournment">
+              <PropertyRef Name="TournamentPk" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="TournamentFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SoccerModelStoreContainer">
+          <EntitySet Name="Club" EntityType="Self.Club" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tournment" EntityType="Self.Tournment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Club_Group" Association="Self.FK_Club_Group">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Club" EntitySet="Club" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_GuestClub" Association="Self.FK_Game_GuestClub">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_HomeClub" Association="Self.FK_Game_HomeClub">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_User" Association="Self.FK_Game_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Tournment" Association="Self.FK_Group_Tournment">
+            <End Role="Tournment" EntitySet="Tournment" />
+            <End Role="Group" EntitySet="Group" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SoccerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="ClubPk" />
+          </Key>
+          <Property Name="ClubPk" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroupFk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Group" Relationship="Self.FK_Club_Group" FromRole="Club" ToRole="Group" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_Game_GuestClub" FromRole="Club" ToRole="Game" />
+          <NavigationProperty Name="Game1" Relationship="Self.FK_Game_HomeClub" FromRole="Club" ToRole="Game" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GamePk" />
+          </Key>
+          <Property Name="GamePk" Type="Int32" Nullable="false" />
+          <Property Name="HomeClubFk" Type="Int32" Nullable="false" />
+          <Property Name="GuestClubFk" Type="Int32" Nullable="false" />
+          <Property Name="HomeResult" Type="Int32" />
+          <Property Name="GuestResult" Type="Int32" />
+          <Property Name="DateTime" Type="DateTime" Precision="0" />
+          <Property Name="Played" Type="Boolean" Nullable="false" />
+          <Property Name="UserFk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Club" Relationship="Self.FK_Game_GuestClub" FromRole="Game" ToRole="Club" />
+          <NavigationProperty Name="Club1" Relationship="Self.FK_Game_HomeClub" FromRole="Game" ToRole="Club" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Game_User" FromRole="Game" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupPk" />
+          </Key>
+          <Property Name="GroupPk" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TournamentFk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Club" Relationship="Self.FK_Club_Group" FromRole="Group" ToRole="Club" />
+          <NavigationProperty Name="Tournment" Relationship="Self.FK_Group_Tournment" FromRole="Group" ToRole="Tournment" />
+        </EntityType>
+        <EntityType Name="Tournment">
+          <Key>
+            <PropertyRef Name="TournamentPk" />
+          </Key>
+          <Property Name="TournamentPk" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Group" Relationship="Self.FK_Group_Tournment" FromRole="Tournment" ToRole="Group" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserPk" />
+          </Key>
+          <Property Name="UserPk" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_Game_User" FromRole="User" ToRole="Game" />
+        </EntityType>
+        <Association Name="FK_Club_Group">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="Club" Type="Self.Club" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupPk" />
+            </Principal>
+            <Dependent Role="Club">
+              <PropertyRef Name="GroupFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_GuestClub">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="GuestClubFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_HomeClub">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="HomeClubFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="UserFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Tournment">
+          <End Role="Tournment" Type="Self.Tournment" Multiplicity="1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournment">
+              <PropertyRef Name="TournamentPk" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="TournamentFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SoccerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Club" EntityType="Self.Club" />
+          <EntitySet Name="Game" EntityType="Self.Game" />
+          <EntitySet Name="Group" EntityType="Self.Group" />
+          <EntitySet Name="Tournment" EntityType="Self.Tournment" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_Club_Group" Association="Self.FK_Club_Group">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Club" EntitySet="Club" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_GuestClub" Association="Self.FK_Game_GuestClub">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_HomeClub" Association="Self.FK_Game_HomeClub">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_User" Association="Self.FK_Game_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Tournment" Association="Self.FK_Group_Tournment">
+            <End Role="Tournment" EntitySet="Tournment" />
+            <End Role="Group" EntitySet="Group" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SoccerModelStoreContainer" CdmEntityContainer="SoccerEntities">
+          <EntitySetMapping Name="Club">
+            <EntityTypeMapping TypeName="SoccerModel.Club">
+              <MappingFragment StoreEntitySet="Club">
+                <ScalarProperty Name="ClubPk" ColumnName="ClubPk" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GroupFk" ColumnName="GroupFk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Game">
+            <EntityTypeMapping TypeName="SoccerModel.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="GamePk" ColumnName="GamePk" />
+                <ScalarProperty Name="HomeClubFk" ColumnName="HomeClubFk" />
+                <ScalarProperty Name="GuestClubFk" ColumnName="GuestClubFk" />
+                <ScalarProperty Name="HomeResult" ColumnName="HomeResult" />
+                <ScalarProperty Name="GuestResult" ColumnName="GuestResult" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Played" ColumnName="Played" />
+                <ScalarProperty Name="UserFk" ColumnName="UserFk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Group">
+            <EntityTypeMapping TypeName="SoccerModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="GroupPk" ColumnName="GroupPk" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TournamentFk" ColumnName="TournamentFk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tournment">
+            <EntityTypeMapping TypeName="SoccerModel.Tournment">
+              <MappingFragment StoreEntitySet="Tournment">
+                <ScalarProperty Name="TournamentPk" ColumnName="TournamentPk" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="SoccerModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserPk" ColumnName="UserPk" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

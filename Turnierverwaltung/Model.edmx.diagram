@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a96ab32d8d7f428b9662caf606f57c18" Name="Diagram1">
+        <EntityTypeShape EntityType="SoccerModel.Club" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Game" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Group" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Tournment" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.User" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="SoccerModel.FK_Club_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="SoccerModel.FK_Game_GuestClub" ManuallyRouted="false" />
+        <AssociationConnector Association="SoccerModel.FK_Game_HomeClub" ManuallyRouted="false" />
+        <AssociationConnector Association="SoccerModel.FK_Game_User" ManuallyRouted="false" />
+        <AssociationConnector Association="SoccerModel.FK_Group_Tournment" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
