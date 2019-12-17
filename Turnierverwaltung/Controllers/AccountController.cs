@@ -19,7 +19,7 @@ namespace Turnierverwaltung.Controllers
         private ApplicationUserManager _userManager;
 
         public AccountController()
-        {
+        {// test
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
