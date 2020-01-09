@@ -19,7 +19,7 @@ namespace Turnierverwaltung.Controllers
         private ApplicationUserManager _userManager;
 
         public AccountController()
-        {// test
+        {// http://www.hurryupandwait.io/blog/implementing-custom-membership-provider-and-role-provider-for-authenticating-asp-net-mvc-applications
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -83,7 +83,7 @@ namespace Turnierverwaltung.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, model.RememberMe });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Ungültiger Anmeldeversuch.");

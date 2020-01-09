@@ -58,11 +58,13 @@ namespace Turnierverwaltung
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "681344763708-ecjdkrrhfgiqnc5so64ihnj28ocabq2r.apps.googleusercontent.com",
+                ClientSecret = "bCQ6JlOt5lyvkPIbtA9N4LJu"
+            });
+            // https://developers.google.com/identity/sign-in/web/sign-in#before_you_begin
+            // wird weitergeleitet http://localhost:51868/signin-google  oder !?
         }
     }
 }

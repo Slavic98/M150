@@ -53,11 +53,11 @@ namespace Turnierverwaltung
             // Konfigurieren der Überprüfungslogik für Kennwörter.
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
+                RequiredLength = 5,
                 RequireNonLetterOrDigit = true,
                 RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                //RequireLowercase = true,
+                //RequireUppercase = true,
             };
 
             // Standardeinstellungen für Benutzersperren konfigurieren

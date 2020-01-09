@@ -15,7 +15,7 @@ namespace Turnierverwaltung.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "UEFA Turnierverwaltung.";
 
             return View();
         }

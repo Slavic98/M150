@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Turnierverwaltung.Game>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeResult)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuestResult)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Played)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Club.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Club1.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Login)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeResult)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuestResult)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Played)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Club.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Club1.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Login)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.GamePk }) |
+            @Html.ActionLink("Details", "Details", new { id=item.GamePk }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.GamePk })
+        </td>
+    </tr>
+}
+
+</table>
