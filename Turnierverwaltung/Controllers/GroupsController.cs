@@ -15,9 +15,15 @@ namespace Turnierverwaltung.Controllers
         private SoccerEntities db = new SoccerEntities();
 
         // GET: Groups
-        public ActionResult Index()
+    
+
+        public ActionResult Index(int? id)
         {
-            var group = db.Group.Include(g => g.Tournment);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var group = db.Group.Where(x => x.TournamentFk == id).Select(x => x.GroupPk);
             return View(group.ToList());
         }
 
