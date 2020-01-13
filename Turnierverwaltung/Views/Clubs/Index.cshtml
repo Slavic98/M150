@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<Turnierverwaltung.Club>
 
 @{
-    ViewBag.Title = "Vereine";
+
+    ViewBag.Title = "Teams A-Z";
+
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,25 +12,14 @@
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            Gruppe <!--Html.DisplayNameFor(model => model.Group.Name)-->
-        </th>
-        <th></th>
+      </th>
+
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Group.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ClubPk }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ClubPk }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ClubPk })
         </td>
     </tr>
 }

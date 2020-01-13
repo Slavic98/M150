@@ -17,7 +17,9 @@ namespace Turnierverwaltung.Controllers
         // GET: Clubs
         public ActionResult Index()
         {
-            var club = db.Club.Include(c => c.Group);
+           var club = db.Club.OrderBy(a => a.Name);
+           // var club = db.Club.GroupBy(a => a.Name).Select(e => new Club {Name }).OrderBy(a => a.Name);
+           // var clubGroupBy = club.GroupBy(a => a.Name);
             return View(club.ToList());
         }
 
