@@ -17,39 +17,34 @@ namespace Turnierverwaltung.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
         public AccountController()
-        {// http://www.hurryupandwait.io/blog/implementing-custom-membership-provider-and-role-provider-for-authenticating-asp-net-mvc-applications
+        {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
+            get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            private set => _signInManager = value;
         }
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            private set => _userManager = value;
+        }
+        public ApplicationRoleManager RoleManager
+        {
+            get => _roleManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            private set => _roleManager = value;
         }
 
         //
@@ -151,7 +146,7 @@ namespace Turnierverwaltung.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email, IsDeleted = false};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -422,18 +417,62 @@ namespace Turnierverwaltung.Controllers
 
             base.Dispose(disposing);
         }
+        //[AllowAnonymous]
+        //[Route("users/{id:guid}/roles")]
+        //[HttpPut]
+        //public async Task<IHttpActionResult> AssignRolesToUser(string id, string[] rolesToAssign)
+        //{
+        //    if (rolesToAssign == null)
+        //    {
+        //        return this.BadRequest("No roles specified");
+        //    }
 
+        //    ///find the user we want to assign roles to
+        //    var appUser = await this.UserManager.FindByIdAsync(id);
+
+        //    if (appUser == null || appUser.IsDeleted)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    ///check if the user currently has any roles
+        //    var currentRoles = await this.UserManager.GetRolesAsync(appUser.Id);
+
+
+        //    var rolesNotExist = rolesToAssign.Except(this.RoleManager.Roles.Select(x => x.Name)).ToArray();
+
+        //    if (rolesNotExist.Count() > 0)
+        //    {
+        //        ModelState.AddModelError("", string.Format("Roles '{0}' does not exist in the system", string.Join(",", rolesNotExist)));
+        //        return this.BadRequest(ModelState);
+        //    }
+
+        //    ///remove user from current roles, if any
+        //    IdentityResult removeResult = await this.UserManager.RemoveFromRolesAsync(appUser.Id, currentRoles.ToArray());
+
+
+        //    if (!removeResult.Succeeded)
+        //    {
+        //        ModelState.AddModelError("", "Failed to remove user roles");
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    ///assign user to the new roles
+        //    IdentityResult addResult = await this.UserManager.AddToRolesAsync(appUser.Id, rolesToAssign);
+
+        //    if (!addResult.Succeeded)
+        //    {
+        //        ModelState.AddModelError("", "Failed to add user roles");
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    return Ok(new { userId = id, rolesAssigned = rolesToAssign });
+        //}
         #region Hilfsprogramme
         // Wird für XSRF-Schutz beim Hinzufügen externer Anmeldungen verwendet
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {

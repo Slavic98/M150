@@ -4,12 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SoccerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SoccerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Club">
           <Key>
             <PropertyRef Name="ClubPk" />
           </Key>
-          <Property Name="ClubPk" Type="int" Nullable="false" />
+          <Property Name="ClubPk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="GroupFk" Type="int" Nullable="false" />
         </EntityType>
@@ -17,7 +17,7 @@
           <Key>
             <PropertyRef Name="GamePk" />
           </Key>
-          <Property Name="GamePk" Type="int" Nullable="false" />
+          <Property Name="GamePk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HomeClubFk" Type="int" Nullable="false" />
           <Property Name="GuestClubFk" Type="int" Nullable="false" />
           <Property Name="HomeResult" Type="int" />
@@ -30,7 +30,7 @@
           <Key>
             <PropertyRef Name="GroupPk" />
           </Key>
-          <Property Name="GroupPk" Type="int" Nullable="false" />
+          <Property Name="GroupPk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="TournamentFk" Type="int" Nullable="false" />
         </EntityType>
@@ -38,7 +38,7 @@
           <Key>
             <PropertyRef Name="TournamentPk" />
           </Key>
-          <Property Name="TournamentPk" Type="int" Nullable="false" />
+          <Property Name="TournamentPk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="StartDate" Type="date" />
           <Property Name="EndDate" Type="date" />
@@ -47,7 +47,7 @@
           <Key>
             <PropertyRef Name="UserPk" />
           </Key>
-          <Property Name="UserPk" Type="int" Nullable="false" />
+          <Property Name="UserPk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
@@ -139,8 +139,7 @@
             <End Role="Group" EntitySet="Group" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SoccerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
