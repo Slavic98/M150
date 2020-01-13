@@ -23,7 +23,17 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var group = db.Group.Where(x => x.TournamentFk == id).Select(x => x.GroupPk);
+            var group = db.Group.Where(x => x.TournamentFk == id);
+            //SELECT * FROM Club c INNER JOIN [Group] g ON c.GroupFk = g.GroupPk INNER JOIN Tournment t ON g.TournamentFk = t.TournamentPk;
+            //SELECT * FROM Club c INNER JOIN [Group] g ON c.GroupFk = g.GroupPk WHERE g.TournamentFk = 1;
+            /*var group = (from c in db.Club 
+                         join g in db.Group on c.GroupFk equals g.GroupPk
+                         select new TableViewModels
+                         {
+
+                         }
+                         )
+                         */
             return View(group.ToList());
         }
 
