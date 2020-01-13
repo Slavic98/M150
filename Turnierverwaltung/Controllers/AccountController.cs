@@ -20,7 +20,7 @@ namespace Turnierverwaltung.Controllers
         private ApplicationRoleManager _roleManager;
 
         public AccountController()
-        {// http://www.hurryupandwait.io/blog/implementing-custom-membership-provider-and-role-provider-for-authenticating-asp-net-mvc-applications
+        {
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
