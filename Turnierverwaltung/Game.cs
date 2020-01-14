@@ -14,17 +14,19 @@ namespace Turnierverwaltung
     
     public partial class Game
     {
-        public int GamePk { get; set; }
+        public int? GamePk { get; set; }
         public int HomeClubFk { get; set; }
         public int GuestClubFk { get; set; }
         public Nullable<int> HomeResult { get; set; }
         public Nullable<int> GuestResult { get; set; }
         public Nullable<System.DateTime> DateTime { get; set; }
+        public string StrDateTime => $"{DateTime:d}";
         public bool Played { get; set; }
-        public int UserFk { get; set; }
+        public Nullable<int> RefereeFk { get; set; }
     
         public virtual Club Club { get; set; }
         public virtual Club Club1 { get; set; }
-        public virtual User User { get; set; }
+        public virtual Referee Referee { get; set; }
+        public virtual Referee Referee1 { get; set; }
     }
 }

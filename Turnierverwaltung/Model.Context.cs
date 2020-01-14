@@ -29,6 +29,10 @@ namespace Turnierverwaltung
         public virtual DbSet<Game> Game { get; set; }
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Tournment> Tournment { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<Referee> Referee { get; set; }
     }
 }

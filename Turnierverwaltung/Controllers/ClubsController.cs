@@ -14,13 +14,31 @@ namespace Turnierverwaltung.Controllers
     {
         private SoccerEntities db = new SoccerEntities();
 
+        //public int? SelectedTournamentFk { get; set; } 
         // GET: Clubs
         public ActionResult Index()
         {
-           var club = db.Club.OrderBy(a => a.Name);
-           // var club = db.Club.GroupBy(a => a.Name).Select(e => new Club {Name }).OrderBy(a => a.Name);
-           // var clubGroupBy = club.GroupBy(a => a.Name);
+            var tournament = GetTournments();
+                int? selTournamentFk = ViewBag.SelectedTournamentFk ?? Convert.ToInt32(tournament.FirstOrDefault()?.Value ?? "0");
+                ViewBag.SelectedTournamentFk = selTournamentFk;
+           var club = db.Club.Where(c=>c.Group.TournamentFk== selTournamentFk).OrderBy(a => a.Name);
+           ViewBag.TournamentsList = tournament;
             return View(club.ToList());
+        }
+
+        private SelectList GetTournments()
+        {
+            var selectListItems =new List<SelectListItem>();
+
+            foreach (var t in db.Tournment)
+            {
+                selectListItems.Add( new SelectListItem
+                {
+                    Value = t.TournamentPk.ToString(),
+                    Text = $"{t.Description} {t.StartDate:d}- {t.EndDate:d}"
+                });
+            }
+            return new SelectList(selectListItems, "Value", "Text");
         }
 
         // GET: Clubs/Details/5
@@ -121,7 +139,7 @@ namespace Turnierverwaltung.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

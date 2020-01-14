@@ -7,28 +7,70 @@
 <h2>@ViewBag.Title</h2>
 
 <table class="table">
+    @foreach (var group in Model)
+    {
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayFor(modelItem => group.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Tournment.Description)
+            Spiele
+        </th>
+        <th>
+            Siege
+        </th>
+        <th>
+            Unentschieden
+        </th>
+        <th>
+            Niederlage
+        </th>
+        <th>
+            Tore
+        </th>
+        <th>
+            Gegen Tore
+        </th>
+        <th>
+            Tordifferenz
+        </th>
+        <th>
+            Punkte
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tournment.Description)
-        </td>
-        <td>
-            
-        </td>
-    </tr>
-}
+        foreach (var item in group.Club)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+                  
+    </td>
+    <td>
+                  
+    </td>
+    <td>
+                  
+    </td>
+    <td>
+                  
+    </td>
+    <td>
+                  
+    </td>
+    <td>
+                  
+    </td>
+    <td>
+    </td>
+</tr>
+        }       }
 
 </table>

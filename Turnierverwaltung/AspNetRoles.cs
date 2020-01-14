@@ -12,20 +12,18 @@ namespace Turnierverwaltung
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class AspNetRoles
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public AspNetRoles()
         {
-            this.Game = new HashSet<Game>();
+            this.AspNetUsers = new HashSet<AspNetUsers>();
         }
     
-        public int UserPk { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public bool IsAdmin { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Game> Game { get; set; }
+        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
     }
 }

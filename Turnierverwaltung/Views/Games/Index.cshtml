@@ -2,90 +2,78 @@
 @model IEnumerable<Turnierverwaltung.Game>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Spiele";
+    var days=new List<DateTime>(){new DateTime(2020,1,3),new DateTime(2020,1,5),new DateTime(2020,1,5),};
 }
 
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Turnier initialisieren", "Create")
 </p>
 
-
 @{
-    List<SelectListItem> listItems = new List<SelectListItem>();
-    listItems.Add(new SelectListItem
-    {
-        Text = "today",
-        Value =DateTime.Today.ToShortDateString()
-    });
-    listItems.Add(new SelectListItem
-    {
-        Text = "MORNING",
-        Value = DateTime.Today.AddDays(1).ToShortDateString(),
-        Selected = true
-    });
-    GamesController gc= new GamesController();
+    var anyGames = true;
 }
 
-Spieltag @Html.DropDownListFor(model => gc.SelectedDay,listItems)
-
-
+@if (anyGames)
+{
+    
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.HomeResult)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GuestResult)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Played)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Club.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Club1.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.Login)
+            @Html.DisplayNameFor(model => model.HomeResult)
         </th>
         <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuestResult)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Club1.Name)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>*@
+        <th></th>
     </tr>
+    @foreach (var day in days)
+    {
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>@day.Date</th>
+        foreach (var item in Model.Where(g => true))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeResult)
+                </td>
+                <td>:</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuestResult)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club1.Name)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.StrDateTime)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.GamePk }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.GamePk })
+                </td>
+            </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.HomeResult)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuestResult)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Played)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Club.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Club1.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.Login)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.GamePk }) |
-            @Html.ActionLink("Details", "Details", new { id=item.GamePk }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.GamePk })
-        </td>
-    </tr>
-}
+        }
+    }
 
 </table>
+}

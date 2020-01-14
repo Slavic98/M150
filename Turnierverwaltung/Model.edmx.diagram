@@ -9,12 +9,21 @@
         <EntityTypeShape EntityType="SoccerModel.Game" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="SoccerModel.Group" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SoccerModel.Tournment" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.User" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
         <AssociationConnector Association="SoccerModel.FK_Club_Group" ManuallyRouted="false" />
         <AssociationConnector Association="SoccerModel.FK_Game_GuestClub" ManuallyRouted="false" />
         <AssociationConnector Association="SoccerModel.FK_Game_HomeClub" ManuallyRouted="false" />
-        <AssociationConnector Association="SoccerModel.FK_Game_User" ManuallyRouted="false" />
         <AssociationConnector Association="SoccerModel.FK_Group_Tournment" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SoccerModel.AspNetRoles" Width="1.5" PointX="7.625" PointY="5.75" />
+        <EntityTypeShape EntityType="SoccerModel.AspNetUserClaims" Width="1.5" PointX="12.125" PointY="5.625" />
+        <EntityTypeShape EntityType="SoccerModel.AspNetUserLogins" Width="1.5" PointX="12.125" PointY="8.375" />
+        <EntityTypeShape EntityType="SoccerModel.AspNetUsers" Width="1.5" PointX="9.875" PointY="4.375" />
+        <EntityTypeShape EntityType="SoccerModel.Referee" Width="1.5" PointX="11" PointY="1.875" />
+        <AssociationConnector Association="SoccerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SoccerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SoccerModel.FK_User_AspNetUsers" />
+        <AssociationConnector Association="SoccerModel.FK_Game_Referee" />
+        <AssociationConnector Association="SoccerModel.AspNetUserRoles" />
+        <AssociationConnector Association="SoccerModel.FK_Game_Referee1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

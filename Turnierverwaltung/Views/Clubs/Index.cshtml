@@ -1,27 +1,40 @@
-﻿@model IEnumerable<Turnierverwaltung.Club>
+﻿@using WebGrease.Css.Extensions
+@model IEnumerable<Turnierverwaltung.Club>
 
 @{
 
-    ViewBag.Title = "Teams A-Z";
+    ViewBag.Title = "Vereine A-Z";
 
 }
 
 <h2>@ViewBag.Title</h2>
 
+<div class="col-md-10">
+    @{
+        var tournaments = new List<Tournment>();
+        Model.ForEach(m => tournaments.Add(m.Group.Tournment));
+
+        int? selTournamentFk = ViewBag.SelectedTournamentFk;
+        SelectList tournamentsList = ViewBag.TournamentsList;
+    }
+
+    <!--SelectExtensions.DropDownList(selTournamentFk.Value, tournamentsList);-->
+</div>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
-      </th>
+        </th>
 
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+    }
 
 </table>
