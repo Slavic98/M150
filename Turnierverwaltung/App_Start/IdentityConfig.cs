@@ -54,8 +54,8 @@ namespace Turnierverwaltung
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 5,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
+                //RequireNonLetterOrDigit = true,
+                //RequireDigit = true,
                 //RequireLowercase = true,
                 //RequireUppercase = true,
             };

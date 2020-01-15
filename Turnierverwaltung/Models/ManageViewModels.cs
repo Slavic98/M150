@@ -28,7 +28,7 @@ namespace Turnierverwaltung.Models
     public class SetPasswordViewModel
     {
         [Required]
-        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 5)]
         [DataType(DataType.Password)]
         [Display(Name = "Neues Kennwort")]
         public string NewPassword { get; set; }
@@ -47,7 +47,7 @@ namespace Turnierverwaltung.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 5)]
         [DataType(DataType.Password)]
         [Display(Name = "Neues Kennwort")]
         public string NewPassword { get; set; }

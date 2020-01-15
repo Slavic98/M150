@@ -8,7 +8,6 @@
 //------------------------------------------------------------------------------
 
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Turnierverwaltung.Models
 {
@@ -17,7 +16,6 @@ namespace Turnierverwaltung.Models
     
     public partial class Game
     {
-        [Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GamePk { get; set; }
         public int HomeClubFk { get; set; }
         public int GuestClubFk { get; set; }
@@ -26,7 +24,18 @@ namespace Turnierverwaltung.Models
         public Nullable<System.DateTime> DateTime { get; set; }
         public bool Played { get; set; }
         public Nullable<int> RefereeFk { get; set; }
-    
+
+        public string GameType
+        {
+            get => GameTypeEnum.ToString();
+            set
+            {
+                var gameTypeEnum = GameTypeEnum;
+                Enum.TryParse(value, out gameTypeEnum);
+                GameTypeEnum = gameTypeEnum;
+            }
+        }
+
         public virtual Club Club { get; set; }
         public virtual Club Club1 { get; set; }
         public virtual Referee Referee { get; set; }

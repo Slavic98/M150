@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -78,7 +79,7 @@ namespace Turnierverwaltung.Controllers
             ViewBag.GuestClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.GuestClubFk);
             ViewBag.HomeClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.HomeClubFk);
             ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "Referee", game.RefereeFk);
-            return View(game);
+            return RedirectToAction("Index");
         }
         public List<Game> GetGroupGames(Group g)
         {
@@ -87,39 +88,39 @@ namespace Turnierverwaltung.Controllers
                 throw new Exception($"Die Gruppe {g.Name} hat {g.Clubs.Count} Vereine, es müssen genau 4 sein!!!");
 
             //4,1, 1.Tag,
-            var game1 = CreateGame(clubs[3].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game1 = CreateQualiGame(clubs[3].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value, 1);
             //2,3, 1.Tag
-            var game2 = CreateGame(clubs[1].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game2 = CreateQualiGame(clubs[1].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value, 1);
 
             //1,2, 2.Tag,
-            var game3 = CreateGame(clubs[0].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
+            var game3 = CreateQualiGame(clubs[0].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
             //3,4, 2.Tag
-            var game4 = CreateGame(clubs[2].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
+            var game4 = CreateQualiGame(clubs[2].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
 
             //3,1, 3.Tag,
-            var game5 = CreateGame(clubs[2].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
+            var game5 = CreateQualiGame(clubs[2].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
             //2,4, 3.Tag
-            var game6 = CreateGame(clubs[1].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
+            var game6 = CreateQualiGame(clubs[1].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
 
             //1,3, 4.Tag,
-            var game7 = CreateGame(clubs[0].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
+            var game7 = CreateQualiGame(clubs[0].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
             //4,2, 4.Tag
-            var game8 = CreateGame(clubs[3].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
+            var game8 = CreateQualiGame(clubs[3].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
 
             //3,2, 5.Tag,
-            var game9 = CreateGame(clubs[2].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
+            var game9 = CreateQualiGame(clubs[2].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
             //1,4, 5.Tag
-            var game10 = CreateGame(clubs[0].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
+            var game10 = CreateQualiGame(clubs[0].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
 
             //2,1, 6.Tag,
-            var game11 = CreateGame(clubs[1].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
+            var game11 = CreateQualiGame(clubs[1].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
             //4,3, 6.Tag
-            var game12 = CreateGame(clubs[3].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
+            var game12 = CreateQualiGame(clubs[3].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
             var games=new List<Game> { game1, game2, game3, game4, game5, game6, game7, game8, game9, game10, game11, game12 };
             return games;
         }
 
-        private Game CreateGame(int homeClubFk, int guestClubFk, DateTime dt, int RefereeFk)
+        private Game CreateQualiGame(int homeClubFk, int guestClubFk, DateTime dt, int RefereeFk)
         {
             return new Game
             {   //GamePk = null,
@@ -127,7 +128,8 @@ namespace Turnierverwaltung.Controllers
                 GuestClubFk = guestClubFk,
                 DateTime = dt,
                 Played = false,
-                RefereeFk = RefereeFk
+                RefereeFk = RefereeFk,
+                GameTypeEnum = GameType.Quali
             };
         }
 
@@ -201,11 +203,23 @@ namespace Turnierverwaltung.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "GamePk,HomeClubFk,GuestClubFk,HomeResult,GuestResult,DateTime,Played,RefereeFk")] Game game)
+        public ActionResult Edit([Bind(Include = "GamePk,HomeResult,GuestResult,Played,RefereeFk")] Game game)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(game).State = EntityState.Modified;
+
+                var objectContext = ((IObjectContextAdapter)db).ObjectContext;
+                var modifiedEntities = objectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified);
+                foreach (var entry in modifiedEntities.Where(entity => entity.Entity.GetType() == typeof(Game)))
+                {
+                    // You need to give Foreign Key Property name
+                    // instead of Navigation Property name
+                    entry.RejectPropertyChanges("HomeClubFk");
+                    entry.RejectPropertyChanges("GuestClubFk");
+                    entry.RejectPropertyChanges("DateTime");
+
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

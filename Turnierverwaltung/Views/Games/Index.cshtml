@@ -51,11 +51,12 @@
     {
         <th></th>
         <th>@day.Date</th>
+        
         <th></th>
         <th></th>
         <th></th>
         <th></th>
-        foreach (var item in Model.Where(g => g.DateTime==day))
+        foreach (var item in Model.Where(g => g.DateTime==day)) // TODO: .GroupBy(g=>g.DateTime))
         {
             <tr>
                 <td>
@@ -74,10 +75,13 @@
                 @*<td>
                         @Html.DisplayFor(modelItem => item.StrDateTime)
                     </td>*@
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.GamePk }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.GamePk })
-                </td>
+            <td>
+                @if (User.Identity.Name == "test@test.test")
+                {
+                    @Html.ActionLink("Edit", "Edit", new {id = item.GamePk})
+                }
+                | @Html.ActionLink("Details", "Details", new { id = item.GamePk })
+            </td>
             </tr>
 
         }

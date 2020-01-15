@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Owin;
 using Turnierverwaltung.Models;
 
 namespace Turnierverwaltung.Controllers
@@ -22,12 +24,34 @@ namespace Turnierverwaltung.Controllers
         public AccountController()
         {
         }
+        private void CreateAdminUserAndRole()
+        {
+            //if (!RoleManager.RoleExists("Admin"))
+            //{
+            //    RoleManager.Create(new IdentityRole("Admin"));
+            //}
+            //if (UserManager.FindByName("Admin") == null)
+            //{
+            //    var user = new ApplicationUser { UserName = "Admin",Email = "admin@admin.ch"};
+            //    UserManager.Create(user,"admin");
+            //    UserManager.AddToRole(user.Id, "Admin");
+            //}
 
+        }
+
+        private void CreateRefereeRole()
+        {
+            if (!RoleManager.RoleExists("Referee"))
+            {
+                RoleManager.Create(new IdentityRole("Referee"));
+            }
+        }
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             RoleManager = roleManager;
+            CreateAdminUserAndRole();
         }
 
         public ApplicationSignInManager SignInManager
@@ -146,7 +170,7 @@ namespace Turnierverwaltung.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {UserName = model.Email, Email = model.Email, IsDeleted = false};
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email, IsDeleted = false, };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

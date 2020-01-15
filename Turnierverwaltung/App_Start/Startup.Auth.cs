@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -66,6 +67,8 @@ namespace Turnierverwaltung
             });
             // https://developers.google.com/identity/sign-in/web/sign-in#before_you_begin
             // wird weitergeleitet http://localhost:51868/signin-google  oder !?
+
         }
+
     }
 }

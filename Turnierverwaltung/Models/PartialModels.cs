@@ -17,4 +17,12 @@ namespace Turnierverwaltung.Models
         public int GoalsDifference { get; set; }
         public int Points { get; set; }
     }
+    public partial class Game
+    {
+        public GameType GameTypeEnum { get; set; }
+    }
+    public enum GameType
+    {
+        Quali, Eighthfinal, Quarterfinal,Semifinal,Final
+    }
 }

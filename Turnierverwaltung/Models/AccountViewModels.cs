@@ -70,7 +70,7 @@ namespace Turnierverwaltung.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 5)]
         [DataType(DataType.Password)]
         [Display(Name = "Kennwort")]
         public string Password { get; set; }
@@ -89,7 +89,7 @@ namespace Turnierverwaltung.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 5)]
         [DataType(DataType.Password)]
         [Display(Name = "Kennwort")]
         public string Password { get; set; }
