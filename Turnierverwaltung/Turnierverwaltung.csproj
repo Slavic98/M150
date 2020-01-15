@@ -257,6 +257,7 @@
     <Content Include="dokumente\Soccer.bak" />
     <Content Include="dokumente\UEFA Chammpions League Regeln 18-19.pdf" />
     <Content Include="dokumente\Datenbank mit Daten\Soccer.bak" />
+    <Content Include="dokumente\Datenbank mit Daten\Soccer_with_asp.bak" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

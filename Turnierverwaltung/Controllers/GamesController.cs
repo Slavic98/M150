@@ -50,7 +50,7 @@ namespace Turnierverwaltung.Controllers
             var allGames=new List<Game>();
             foreach (var @group in groups)
             {
-                allGames.AddRange(GetGroupGames(group));
+                allGames.AddRange(GetGroupGames(group,true));
             }
 
             db.Games.AddRange(allGames);
@@ -81,57 +81,66 @@ namespace Turnierverwaltung.Controllers
             ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "Referee", game.RefereeFk);
             return RedirectToAction("Index");
         }
-        public List<Game> GetGroupGames(Group g)
+        public List<Game> GetGroupGames(Group g,bool withRandomResultat=false)
         {
             var clubs = g.Clubs.ToList();
             if (g.Clubs.Count != 4)
                 throw new Exception($"Die Gruppe {g.Name} hat {g.Clubs.Count} Vereine, es müssen genau 4 sein!!!");
 
             //4,1, 1.Tag,
-            var game1 = CreateQualiGame(clubs[3].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game1 = CreateQualiGame(clubs[3].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value, 1, withRandomResultat);
             //2,3, 1.Tag
-            var game2 = CreateQualiGame(clubs[1].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game2 = CreateQualiGame(clubs[1].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value, 1, withRandomResultat);
 
             //1,2, 2.Tag,
-            var game3 = CreateQualiGame(clubs[0].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
+            var game3 = CreateQualiGame(clubs[0].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1, withRandomResultat);
             //3,4, 2.Tag
-            var game4 = CreateQualiGame(clubs[2].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
+            var game4 = CreateQualiGame(clubs[2].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1, withRandomResultat);
 
             //3,1, 3.Tag,
-            var game5 = CreateQualiGame(clubs[2].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
+            var game5 = CreateQualiGame(clubs[2].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1, withRandomResultat);
             //2,4, 3.Tag
-            var game6 = CreateQualiGame(clubs[1].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
+            var game6 = CreateQualiGame(clubs[1].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1, withRandomResultat);
 
             //1,3, 4.Tag,
-            var game7 = CreateQualiGame(clubs[0].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
+            var game7 = CreateQualiGame(clubs[0].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1, withRandomResultat);
             //4,2, 4.Tag
-            var game8 = CreateQualiGame(clubs[3].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
+            var game8 = CreateQualiGame(clubs[3].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1, withRandomResultat);
 
             //3,2, 5.Tag,
-            var game9 = CreateQualiGame(clubs[2].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
+            var game9 = CreateQualiGame(clubs[2].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1, withRandomResultat);
             //1,4, 5.Tag
-            var game10 = CreateQualiGame(clubs[0].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
+            var game10 = CreateQualiGame(clubs[0].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1, withRandomResultat);
 
             //2,1, 6.Tag,
-            var game11 = CreateQualiGame(clubs[1].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
+            var game11 = CreateQualiGame(clubs[1].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1, withRandomResultat);
             //4,3, 6.Tag
-            var game12 = CreateQualiGame(clubs[3].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
+            var game12 = CreateQualiGame(clubs[3].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1, withRandomResultat);
             var games=new List<Game> { game1, game2, game3, game4, game5, game6, game7, game8, game9, game10, game11, game12 };
             return games;
         }
 
-        private Game CreateQualiGame(int homeClubFk, int guestClubFk, DateTime dt, int RefereeFk)
+        private Game CreateQualiGame(int homeClubFk, int guestClubFk, DateTime dt, int refereeFk,bool withRandomRes=false)
         {
-            return new Game
+            var game= new Game
             {   //GamePk = null,
                 HomeClubFk = homeClubFk,
                 GuestClubFk = guestClubFk,
                 DateTime = dt,
-                Played = false,
-                RefereeFk = RefereeFk,
+                Played = withRandomRes,
+                RefereeFk = refereeFk,
                 GameTypeEnum = GameType.Quali
             };
+            if (withRandomRes)
+            {
+                game.HomeResult = _homeRandom.Next(0,7);
+                game.GuestResult = _guestandom.Next(0,7);
+            }
+            return game;
         }
+
+        private Random _homeRandom =new Random();
+        private Random _guestandom = new Random(1);
 
         public int GetQualificationPointsOfClub(Club club, Tournment tournment)
         {
