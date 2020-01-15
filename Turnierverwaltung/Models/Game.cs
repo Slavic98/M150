@@ -7,26 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Turnierverwaltung
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Turnierverwaltung.Models
 {
     using System;
     using System.Collections.Generic;
     
     public partial class Game
     {
-        public int? GamePk { get; set; }
+        [Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GamePk { get; set; }
         public int HomeClubFk { get; set; }
         public int GuestClubFk { get; set; }
         public Nullable<int> HomeResult { get; set; }
         public Nullable<int> GuestResult { get; set; }
         public Nullable<System.DateTime> DateTime { get; set; }
-        public string StrDateTime => $"{DateTime:d}";
         public bool Played { get; set; }
         public Nullable<int> RefereeFk { get; set; }
     
         public virtual Club Club { get; set; }
         public virtual Club Club1 { get; set; }
         public virtual Referee Referee { get; set; }
-        public virtual Referee Referee1 { get; set; }
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a96ab32d8d7f428b9662caf606f57c18" Name="Diagram1">
+        <EntityTypeShape EntityType="SoccerModel.AspNetRole" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="SoccerModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="7" />
+        <EntityTypeShape EntityType="SoccerModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="4.5" />
+        <EntityTypeShape EntityType="SoccerModel.AspNetUser" Width="1.5" PointX="3" PointY="3.25" />
+        <EntityTypeShape EntityType="SoccerModel.Club" Width="1.5" PointX="5.25" PointY="9.75" />
+        <EntityTypeShape EntityType="SoccerModel.Game" Width="1.5" PointX="7.5" PointY="1.25" />
+        <EntityTypeShape EntityType="SoccerModel.Group" Width="1.5" PointX="3" PointY="9.875" />
+        <EntityTypeShape EntityType="SoccerModel.Referee" Width="1.5" PointX="5.25" PointY="1.875" />
+        <EntityTypeShape EntityType="SoccerModel.sysdiagram" Width="1.5" PointX="7.75" PointY="5.75" />
+        <EntityTypeShape EntityType="SoccerModel.Tournment" Width="1.5" PointX="0.75" PointY="9.875" />
+        <AssociationConnector Association="SoccerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SoccerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SoccerModel.FK_User_AspNetUsers" />
+        <AssociationConnector Association="SoccerModel.FK_Club_Group" />
+        <AssociationConnector Association="SoccerModel.FK_Game_GuestClub" />
+        <AssociationConnector Association="SoccerModel.FK_Game_HomeClub" />
+        <AssociationConnector Association="SoccerModel.FK_Game_Referee" />
+        <AssociationConnector Association="SoccerModel.FK_Group_Tournment" />
+        <AssociationConnector Association="SoccerModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

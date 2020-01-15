@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Turnierverwaltung;
+using Turnierverwaltung.Models;
 
 namespace Turnierverwaltung.Controllers
 {
@@ -17,7 +17,7 @@ namespace Turnierverwaltung.Controllers
         // GET: Tournments
         public ActionResult Index()
         {
-            return View(db.Tournment.ToList());
+            return View(db.Tournments.ToList());
         }
 
         // GET: Tournments/Details/5
@@ -27,7 +27,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tournment tournment = db.Tournment.Find(id);
+            Tournment tournment = db.Tournments.Find(id);
             if (tournment == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace Turnierverwaltung.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Tournment.Add(tournment);
+                db.Tournments.Add(tournment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tournment tournment = db.Tournment.Find(id);
+            Tournment tournment = db.Tournments.Find(id);
             if (tournment == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tournment tournment = db.Tournment.Find(id);
+            Tournment tournment = db.Tournments.Find(id);
             if (tournment == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace Turnierverwaltung.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Tournment tournment = db.Tournment.Find(id);
-            db.Tournment.Remove(tournment);
+            Tournment tournment = db.Tournments.Find(id);
+            db.Tournments.Remove(tournment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

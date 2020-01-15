@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Turnierverwaltung;
+using Turnierverwaltung.Models;
 
 namespace Turnierverwaltung.Controllers
 {
@@ -21,7 +21,7 @@ namespace Turnierverwaltung.Controllers
             var tournament = GetTournments();
                 int? selTournamentFk = ViewBag.SelectedTournamentFk ?? Convert.ToInt32(tournament.FirstOrDefault()?.Value ?? "0");
                 ViewBag.SelectedTournamentFk = selTournamentFk;
-           var club = db.Club.Where(c=>c.Group.TournamentFk== selTournamentFk).OrderBy(a => a.Name);
+           var club = db.Clubs.Where(c=>c.Group.TournamentFk== selTournamentFk).OrderBy(a => a.Name);
            ViewBag.TournamentsList = tournament;
             return View(club.ToList());
         }
@@ -30,7 +30,7 @@ namespace Turnierverwaltung.Controllers
         {
             var selectListItems =new List<SelectListItem>();
 
-            foreach (var t in db.Tournment)
+            foreach (var t in db.Tournments)
             {
                 selectListItems.Add( new SelectListItem
                 {
@@ -48,7 +48,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Club club = db.Club.Find(id);
+            Club club = db.Clubs.Find(id);
             if (club == null)
             {
                 return HttpNotFound();
@@ -59,7 +59,7 @@ namespace Turnierverwaltung.Controllers
         // GET: Clubs/Create
         public ActionResult Create()
         {
-            ViewBag.GroupFk = new SelectList(db.Group, "GroupPk", "Name");
+            ViewBag.GroupFk = new SelectList(db.Groups, "GroupPk", "Name");
             return View();
         }
 
@@ -72,12 +72,12 @@ namespace Turnierverwaltung.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Club.Add(club);
+                db.Clubs.Add(club);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GroupFk = new SelectList(db.Group, "GroupPk", "Name", club.GroupFk);
+            ViewBag.GroupFk = new SelectList(db.Groups, "GroupPk", "Name", club.GroupFk);
             return View(club);
         }
 
@@ -88,12 +88,12 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Club club = db.Club.Find(id);
+            Club club = db.Clubs.Find(id);
             if (club == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.GroupFk = new SelectList(db.Group, "GroupPk", "Name", club.GroupFk);
+            ViewBag.GroupFk = new SelectList(db.Groups, "GroupPk", "Name", club.GroupFk);
             return View(club);
         }
 
@@ -110,7 +110,7 @@ namespace Turnierverwaltung.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GroupFk = new SelectList(db.Group, "GroupPk", "Name", club.GroupFk);
+            ViewBag.GroupFk = new SelectList(db.Groups, "GroupPk", "Name", club.GroupFk);
             return View(club);
         }
 
@@ -121,7 +121,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Club club = db.Club.Find(id);
+            Club club = db.Clubs.Find(id);
             if (club == null)
             {
                 return HttpNotFound();
@@ -134,8 +134,8 @@ namespace Turnierverwaltung.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Club club = db.Club.Find(id);
-            db.Club.Remove(club);
+            Club club = db.Clubs.Find(id);
+            db.Clubs.Remove(club);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

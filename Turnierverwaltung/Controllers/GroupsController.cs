@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Turnierverwaltung;
+using Turnierverwaltung.Models;
 
 namespace Turnierverwaltung.Controllers
 {
@@ -23,17 +23,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var group = db.Group.Where(x => x.TournamentFk == id);
-            //SELECT * FROM Club c INNER JOIN [Group] g ON c.GroupFk = g.GroupPk INNER JOIN Tournment t ON g.TournamentFk = t.TournamentPk;
-            //SELECT * FROM Club c INNER JOIN [Group] g ON c.GroupFk = g.GroupPk WHERE g.TournamentFk = 1;
-            /*var group = (from c in db.Club 
-                         join g in db.Group on c.GroupFk equals g.GroupPk
-                         select new TableViewModels
-                         {
-
-                         }
-                         )
-                         */
+            var group = db.Groups.Where(x => x.TournamentFk == id);
             return View(group.ToList());
         }
 
@@ -44,7 +34,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.Group.Find(id);
+            Group group = db.Groups.Find(id);
             if (group == null)
             {
                 return HttpNotFound();
@@ -55,7 +45,7 @@ namespace Turnierverwaltung.Controllers
         // GET: Groups/Create
         public ActionResult Create()
         {
-            ViewBag.TournamentFk = new SelectList(db.Tournment, "TournamentPk", "Description");
+            ViewBag.TournamentFk = new SelectList(db.Tournments, "TournamentPk", "Description");
             return View();
         }
 
@@ -68,12 +58,12 @@ namespace Turnierverwaltung.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Group.Add(group);
+                db.Groups.Add(group);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TournamentFk = new SelectList(db.Tournment, "TournamentPk", "Description", group.TournamentFk);
+            ViewBag.TournamentFk = new SelectList(db.Tournments, "TournamentPk", "Description", group.TournamentFk);
             return View(group);
         }
 
@@ -84,12 +74,12 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.Group.Find(id);
+            Group group = db.Groups.Find(id);
             if (group == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.TournamentFk = new SelectList(db.Tournment, "TournamentPk", "Description", group.TournamentFk);
+            ViewBag.TournamentFk = new SelectList(db.Tournments, "TournamentPk", "Description", group.TournamentFk);
             return View(group);
         }
 
@@ -106,7 +96,7 @@ namespace Turnierverwaltung.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.TournamentFk = new SelectList(db.Tournment, "TournamentPk", "Description", group.TournamentFk);
+            ViewBag.TournamentFk = new SelectList(db.Tournments, "TournamentPk", "Description", group.TournamentFk);
             return View(group);
         }
 
@@ -117,7 +107,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.Group.Find(id);
+            Group group = db.Groups.Find(id);
             if (group == null)
             {
                 return HttpNotFound();
@@ -130,8 +120,8 @@ namespace Turnierverwaltung.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Group group = db.Group.Find(id);
-            db.Group.Remove(group);
+            Group group = db.Groups.Find(id);
+            db.Groups.Remove(group);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

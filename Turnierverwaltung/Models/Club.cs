@@ -7,23 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Turnierverwaltung
+namespace Turnierverwaltung.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetRoles
+    public partial class Club
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AspNetRoles()
+        public Club()
         {
-            this.AspNetUsers = new HashSet<AspNetUsers>();
+            this.Games = new HashSet<Game>();
+            this.Games1 = new HashSet<Game>();
         }
     
-        public string Id { get; set; }
+        public int ClubPk { get; set; }
         public string Name { get; set; }
+        public int GroupFk { get; set; }
     
+        public virtual Group Group { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
+        public virtual ICollection<Game> Games { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Game> Games1 { get; set; }
     }
 }

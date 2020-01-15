@@ -93,6 +93,16 @@
           <Property Name="RefereePk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AspNetUserFk" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="Tournment">
           <Key>
             <PropertyRef Name="TournamentPk" />
@@ -240,6 +250,7 @@
           <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Referee" EntityType="Self.Referee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tournment" EntityType="Self.Tournment" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Club_Group" Association="Self.FK_Club_Group">
             <End Role="Group" EntitySet="Group" />
@@ -286,162 +297,63 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SoccerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Club">
-          <Key>
-            <PropertyRef Name="ClubPk" />
-          </Key>
-          <Property Name="ClubPk" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="GroupFk" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Group" Relationship="Self.FK_Club_Group" FromRole="Club" ToRole="Group" />
-          <NavigationProperty Name="Game" Relationship="Self.FK_Game_GuestClub" FromRole="Club" ToRole="Game" />
-          <NavigationProperty Name="Game1" Relationship="Self.FK_Game_HomeClub" FromRole="Club" ToRole="Game" />
-        </EntityType>
-        <EntityType Name="Game">
-          <Key>
-            <PropertyRef Name="GamePk" />
-          </Key>
-          <Property Name="GamePk" Type="Int32" Nullable="false" />
-          <Property Name="HomeClubFk" Type="Int32" Nullable="false" />
-          <Property Name="GuestClubFk" Type="Int32" Nullable="false" />
-          <Property Name="HomeResult" Type="Int32" />
-          <Property Name="GuestResult" Type="Int32" />
-          <Property Name="DateTime" Type="DateTime" Precision="3" />
-          <Property Name="Played" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Club" Relationship="Self.FK_Game_GuestClub" FromRole="Game" ToRole="Club" />
-          <NavigationProperty Name="Club1" Relationship="Self.FK_Game_HomeClub" FromRole="Game" ToRole="Club" />
-          <Property Name="RefereeFk" Type="Int32" />
-          <NavigationProperty Name="Referee" Relationship="SoccerModel.FK_Game_Referee" FromRole="Game" ToRole="Referee" />
-          <NavigationProperty Name="Referee1" Relationship="SoccerModel.FK_Game_Referee1" FromRole="Game" ToRole="Referee" />
-        </EntityType>
-        <EntityType Name="Group">
-          <Key>
-            <PropertyRef Name="GroupPk" />
-          </Key>
-          <Property Name="GroupPk" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TournamentFk" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Club" Relationship="Self.FK_Club_Group" FromRole="Group" ToRole="Club" />
-          <NavigationProperty Name="Tournment" Relationship="Self.FK_Group_Tournment" FromRole="Group" ToRole="Tournment" />
-        </EntityType>
-        <EntityType Name="Tournment">
-          <Key>
-            <PropertyRef Name="TournamentPk" />
-          </Key>
-          <Property Name="TournamentPk" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Group" Relationship="Self.FK_Group_Tournment" FromRole="Tournment" ToRole="Group" />
-        </EntityType>
-        <Association Name="FK_Club_Group">
-          <End Role="Group" Type="Self.Group" Multiplicity="1" />
-          <End Role="Club" Type="Self.Club" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Group">
-              <PropertyRef Name="GroupPk" />
-            </Principal>
-            <Dependent Role="Club">
-              <PropertyRef Name="GroupFk" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Game_GuestClub">
-          <End Role="Club" Type="Self.Club" Multiplicity="1" />
-          <End Role="Game" Type="Self.Game" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Club">
-              <PropertyRef Name="ClubPk" />
-            </Principal>
-            <Dependent Role="Game">
-              <PropertyRef Name="GuestClubFk" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Game_HomeClub">
-          <End Role="Club" Type="Self.Club" Multiplicity="1" />
-          <End Role="Game" Type="Self.Game" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Club">
-              <PropertyRef Name="ClubPk" />
-            </Principal>
-            <Dependent Role="Game">
-              <PropertyRef Name="HomeClubFk" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Group_Tournment">
-          <End Role="Tournment" Type="Self.Tournment" Multiplicity="1" />
-          <End Role="Group" Type="Self.Group" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tournment">
-              <PropertyRef Name="TournamentPk" />
-            </Principal>
-            <Dependent Role="Group">
-              <PropertyRef Name="TournamentFk" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="SoccerEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Club" EntityType="Self.Club" />
-          <EntitySet Name="Game" EntityType="Self.Game" />
-          <EntitySet Name="Group" EntityType="Self.Group" />
-          <EntitySet Name="Tournment" EntityType="Self.Tournment" />
-          <AssociationSet Name="FK_Club_Group" Association="Self.FK_Club_Group">
-            <End Role="Group" EntitySet="Group" />
-            <End Role="Club" EntitySet="Club" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Game_GuestClub" Association="Self.FK_Game_GuestClub">
-            <End Role="Club" EntitySet="Club" />
-            <End Role="Game" EntitySet="Game" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Game_HomeClub" Association="Self.FK_Game_HomeClub">
-            <End Role="Club" EntitySet="Club" />
-            <End Role="Game" EntitySet="Game" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Group_Tournment" Association="Self.FK_Group_Tournment">
-            <End Role="Tournment" EntitySet="Tournment" />
-            <End Role="Group" EntitySet="Group" />
-          </AssociationSet>
-          <EntitySet Name="AspNetRoles" EntityType="SoccerModel.AspNetRoles" />
-          <EntitySet Name="AspNetUserClaims" EntityType="SoccerModel.AspNetUserClaims" />
-          <EntitySet Name="AspNetUserLogins" EntityType="SoccerModel.AspNetUserLogins" />
-          <EntitySet Name="AspNetUsers" EntityType="SoccerModel.AspNetUsers" />
-          <EntitySet Name="Referee" EntityType="SoccerModel.Referee" />
+          <EntitySet Name="AspNetRoles" EntityType="SoccerModel.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="SoccerModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="SoccerModel.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="SoccerModel.AspNetUser" />
+          <EntitySet Name="Clubs" EntityType="SoccerModel.Club" />
+          <EntitySet Name="Games" EntityType="SoccerModel.Game" />
+          <EntitySet Name="Groups" EntityType="SoccerModel.Group" />
+          <EntitySet Name="Referees" EntityType="SoccerModel.Referee" />
+          <EntitySet Name="sysdiagrams" EntityType="SoccerModel.sysdiagram" />
+          <EntitySet Name="Tournments" EntityType="SoccerModel.Tournment" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="SoccerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="SoccerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
           </AssociationSet>
           <AssociationSet Name="FK_User_AspNetUsers" Association="SoccerModel.FK_User_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Referee" EntitySet="Referee" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Referee" EntitySet="Referees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Club_Group" Association="SoccerModel.FK_Club_Group">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="Club" EntitySet="Clubs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_GuestClub" Association="SoccerModel.FK_Game_GuestClub">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_HomeClub" Association="SoccerModel.FK_Game_HomeClub">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="Game" EntitySet="Games" />
           </AssociationSet>
           <AssociationSet Name="FK_Game_Referee" Association="SoccerModel.FK_Game_Referee">
-            <End Role="Referee" EntitySet="Referee" />
-            <End Role="Game" EntitySet="Game" />
+            <End Role="Referee" EntitySet="Referees" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Tournment" Association="SoccerModel.FK_Group_Tournment">
+            <End Role="Tournment" EntitySet="Tournments" />
+            <End Role="Group" EntitySet="Groups" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="SoccerModel.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Game_Referee1" Association="SoccerModel.FK_Game_Referee1">
-            <End Role="Referee" EntitySet="Referee" />
-            <End Role="Game" EntitySet="Game" />
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="AspNetRoles">
+        <EntityType Name="AspNetRole">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="SoccerModel.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="SoccerModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
         </EntityType>
-        <EntityType Name="AspNetUserClaims">
+        <EntityType Name="AspNetUserClaim">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -449,9 +361,9 @@
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="SoccerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser" Relationship="SoccerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
         </EntityType>
-        <EntityType Name="AspNetUserLogins">
+        <EntityType Name="AspNetUserLogin">
           <Key>
             <PropertyRef Name="LoginProvider" />
             <PropertyRef Name="ProviderKey" />
@@ -460,9 +372,9 @@
           <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="SoccerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser" Relationship="SoccerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
         </EntityType>
-        <EntityType Name="AspNetUsers">
+        <EntityType Name="AspNetUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -479,10 +391,47 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="SoccerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="SoccerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="Referee" Relationship="SoccerModel.FK_User_AspNetUsers" FromRole="AspNetUsers" ToRole="Referee" />
-          <NavigationProperty Name="AspNetRoles" Relationship="SoccerModel.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="SoccerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="SoccerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="Referees" Relationship="SoccerModel.FK_User_AspNetUsers" FromRole="AspNetUser" ToRole="Referee" />
+          <NavigationProperty Name="AspNetRoles" Relationship="SoccerModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="ClubPk" />
+          </Key>
+          <Property Name="ClubPk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="GroupFk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Group" Relationship="SoccerModel.FK_Club_Group" FromRole="Club" ToRole="Group" />
+          <NavigationProperty Name="Games" Relationship="SoccerModel.FK_Game_GuestClub" FromRole="Club" ToRole="Game" />
+          <NavigationProperty Name="Games1" Relationship="SoccerModel.FK_Game_HomeClub" FromRole="Club" ToRole="Game" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GamePk" />
+          </Key>
+          <Property Name="GamePk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HomeClubFk" Type="Int32" Nullable="false" />
+          <Property Name="GuestClubFk" Type="Int32" Nullable="false" />
+          <Property Name="HomeResult" Type="Int32" />
+          <Property Name="GuestResult" Type="Int32" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="Played" Type="Boolean" Nullable="false" />
+          <Property Name="RefereeFk" Type="Int32" />
+          <NavigationProperty Name="Club" Relationship="SoccerModel.FK_Game_GuestClub" FromRole="Game" ToRole="Club" />
+          <NavigationProperty Name="Club1" Relationship="SoccerModel.FK_Game_HomeClub" FromRole="Game" ToRole="Club" />
+          <NavigationProperty Name="Referee" Relationship="SoccerModel.FK_Game_Referee" FromRole="Game" ToRole="Referee" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupPk" />
+          </Key>
+          <Property Name="GroupPk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TournamentFk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Clubs" Relationship="SoccerModel.FK_Club_Group" FromRole="Group" ToRole="Club" />
+          <NavigationProperty Name="Tournment" Relationship="SoccerModel.FK_Group_Tournment" FromRole="Group" ToRole="Tournment" />
         </EntityType>
         <EntityType Name="Referee">
           <Key>
@@ -490,43 +439,62 @@
           </Key>
           <Property Name="RefereePk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AspNetUserFk" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="SoccerModel.FK_User_AspNetUsers" FromRole="Referee" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Game" Relationship="SoccerModel.FK_Game_Referee" FromRole="Referee" ToRole="Game" />
-          <NavigationProperty Name="Game1" Relationship="SoccerModel.FK_Game_Referee1" FromRole="Referee" ToRole="Game" />
+          <NavigationProperty Name="AspNetUser" Relationship="SoccerModel.FK_User_AspNetUsers" FromRole="Referee" ToRole="AspNetUser" />
+          <NavigationProperty Name="Games" Relationship="SoccerModel.FK_Game_Referee" FromRole="Referee" ToRole="Game" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Tournment">
+          <Key>
+            <PropertyRef Name="TournamentPk" />
+          </Key>
+          <Property Name="TournamentPk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Groups" Relationship="SoccerModel.FK_Group_Tournment" FromRole="Tournment" ToRole="Group" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Type="SoccerModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+          <End Type="SoccerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="SoccerModel.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
+          <End Type="SoccerModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
+            <Principal Role="AspNetUser">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserClaims">
+            <Dependent Role="AspNetUserClaim">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Type="SoccerModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+          <End Type="SoccerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="SoccerModel.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
+          <End Type="SoccerModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
+            <Principal Role="AspNetUser">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserLogins">
+            <Dependent Role="AspNetUserLogin">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_AspNetUsers">
-          <End Type="SoccerModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="SoccerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
           <End Type="SoccerModel.Referee" Role="Referee" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
+            <Principal Role="AspNetUser">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Referee">
@@ -534,23 +502,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Game_Referee">
-          <End Type="SoccerModel.Referee" Role="Referee" Multiplicity="1" />
-          <End Type="SoccerModel.Game" Role="Game" Multiplicity="0..1" />
+        <Association Name="FK_Club_Group">
+          <End Type="SoccerModel.Group" Role="Group" Multiplicity="1" />
+          <End Type="SoccerModel.Club" Role="Club" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Referee">
-              <PropertyRef Name="RefereePk" />
+            <Principal Role="Group">
+              <PropertyRef Name="GroupPk" />
             </Principal>
-            <Dependent Role="Game">
-              <PropertyRef Name="GamePk" />
+            <Dependent Role="Club">
+              <PropertyRef Name="GroupFk" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AspNetUserRoles">
-          <End Type="SoccerModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
-          <End Type="SoccerModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
+        <Association Name="FK_Game_GuestClub">
+          <End Type="SoccerModel.Club" Role="Club" Multiplicity="1" />
+          <End Type="SoccerModel.Game" Role="Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="GuestClubFk" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Game_Referee1">
+        <Association Name="FK_Game_HomeClub">
+          <End Type="SoccerModel.Club" Role="Club" Multiplicity="1" />
+          <End Type="SoccerModel.Game" Role="Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="ClubPk" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="HomeClubFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_Referee">
           <End Type="SoccerModel.Referee" Role="Referee" Multiplicity="0..1" />
           <End Type="SoccerModel.Game" Role="Game" Multiplicity="*" />
           <ReferentialConstraint>
@@ -562,56 +550,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Group_Tournment">
+          <End Type="SoccerModel.Tournment" Role="Tournment" Multiplicity="1" />
+          <End Type="SoccerModel.Group" Role="Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournment">
+              <PropertyRef Name="TournamentPk" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="TournamentFk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="SoccerModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="SoccerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SoccerModelStoreContainer" CdmEntityContainer="SoccerEntities">
-          <EntitySetMapping Name="Club">
-            <EntityTypeMapping TypeName="SoccerModel.Club">
-              <MappingFragment StoreEntitySet="Club">
-                <ScalarProperty Name="ClubPk" ColumnName="ClubPk" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="GroupFk" ColumnName="GroupFk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Game">
-            <EntityTypeMapping TypeName="SoccerModel.Game">
-              <MappingFragment StoreEntitySet="Game">
-                <ScalarProperty Name="RefereeFk" ColumnName="RefereeFk" />
-                <ScalarProperty Name="GamePk" ColumnName="GamePk" />
-                <ScalarProperty Name="HomeClubFk" ColumnName="HomeClubFk" />
-                <ScalarProperty Name="GuestClubFk" ColumnName="GuestClubFk" />
-                <ScalarProperty Name="HomeResult" ColumnName="HomeResult" />
-                <ScalarProperty Name="GuestResult" ColumnName="GuestResult" />
-                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-                <ScalarProperty Name="Played" ColumnName="Played" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Group">
-            <EntityTypeMapping TypeName="SoccerModel.Group">
-              <MappingFragment StoreEntitySet="Group">
-                <ScalarProperty Name="GroupPk" ColumnName="GroupPk" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="TournamentFk" ColumnName="TournamentFk" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tournment">
-            <EntityTypeMapping TypeName="SoccerModel.Tournment">
-              <MappingFragment StoreEntitySet="Tournment">
-                <ScalarProperty Name="TournamentPk" ColumnName="TournamentPk" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="SoccerModel.AspNetRoles">
+            <EntityTypeMapping TypeName="SoccerModel.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -619,7 +581,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="SoccerModel.AspNetUserClaims">
+            <EntityTypeMapping TypeName="SoccerModel.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
                 <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
@@ -629,7 +591,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="SoccerModel.AspNetUserLogins">
+            <EntityTypeMapping TypeName="SoccerModel.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -638,7 +600,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="SoccerModel.AspNetUsers">
+            <EntityTypeMapping TypeName="SoccerModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
@@ -656,7 +618,39 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Referee">
+          <EntitySetMapping Name="Clubs">
+            <EntityTypeMapping TypeName="SoccerModel.Club">
+              <MappingFragment StoreEntitySet="Club">
+                <ScalarProperty Name="GroupFk" ColumnName="GroupFk" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClubPk" ColumnName="ClubPk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="SoccerModel.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="RefereeFk" ColumnName="RefereeFk" />
+                <ScalarProperty Name="Played" ColumnName="Played" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="GuestResult" ColumnName="GuestResult" />
+                <ScalarProperty Name="HomeResult" ColumnName="HomeResult" />
+                <ScalarProperty Name="GuestClubFk" ColumnName="GuestClubFk" />
+                <ScalarProperty Name="HomeClubFk" ColumnName="HomeClubFk" />
+                <ScalarProperty Name="GamePk" ColumnName="GamePk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="SoccerModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="TournamentFk" ColumnName="TournamentFk" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GroupPk" ColumnName="GroupPk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Referees">
             <EntityTypeMapping TypeName="SoccerModel.Referee">
               <MappingFragment StoreEntitySet="Referee">
                 <ScalarProperty Name="AspNetUserFk" ColumnName="AspNetUserFk" />
@@ -664,11 +658,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SoccerModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tournments">
+            <EntityTypeMapping TypeName="SoccerModel.Tournment">
+              <MappingFragment StoreEntitySet="Tournment">
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TournamentPk" ColumnName="TournamentPk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="SoccerModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetUsers">
+            <EndProperty Name="AspNetUser">
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
-            <EndProperty Name="AspNetRoles">
+            <EndProperty Name="AspNetRole">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
@@ -686,7 +701,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />

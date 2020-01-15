@@ -1,10 +1,10 @@
-﻿@model Turnierverwaltung.Game
+﻿@model Turnierverwaltung.Models.Game
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Ändern</h2>
 
 
 @using (Html.BeginForm())
@@ -68,7 +68,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RefereeFk, "RefereeFk", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.RefereeFk, "Schiedsrichter", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("RefereeFk", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RefereeFk, "", new { @class = "text-danger" })

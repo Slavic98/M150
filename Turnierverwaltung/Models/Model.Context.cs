@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Turnierverwaltung
+namespace Turnierverwaltung.Models
 {
     using System;
     using System.Data.Entity;
@@ -25,14 +25,15 @@ namespace Turnierverwaltung
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Club> Club { get; set; }
-        public virtual DbSet<Game> Game { get; set; }
-        public virtual DbSet<Group> Group { get; set; }
-        public virtual DbSet<Tournment> Tournment { get; set; }
-        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Referee> Referee { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Club> Clubs { get; set; }
+        public virtual DbSet<Game> Games { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Referee> Referees { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Tournment> Tournments { get; set; }
     }
 }

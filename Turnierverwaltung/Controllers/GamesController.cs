@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Turnierverwaltung;
+using Turnierverwaltung.Models;
 
 namespace Turnierverwaltung.Controllers
 {
@@ -17,7 +17,7 @@ namespace Turnierverwaltung.Controllers
         // GET: Games
         public ActionResult Index()
         {
-            var game = db.Game.Include(g => g.Club).Include(g => g.Club1).Include(g => g.Referee);
+            var game = db.Games.Include(g => g.Club).Include(g => g.Club1).Include(g => g.Referee);
             return View(game.ToList());
         }
 
@@ -28,7 +28,7 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game game = db.Game.Find(id);
+            Game game = db.Games.Find(id);
             if (game == null)
             {
                 return HttpNotFound();
@@ -39,26 +39,26 @@ namespace Turnierverwaltung.Controllers
         // GET: Games/Create
         public ActionResult Create()
         {
-            if (db.Game.Any())
+            if (db.Games.Any())
             {
-                return View();
+                return RedirectToAction("Index");
             }
 
-            var tournamentFk = db.Tournment.FirstOrDefault().TournamentPk;
-            var groups = db.Group.Include(g => g.Club).Where(g => g.TournamentFk == tournamentFk).ToList();
+            var tournamentFk = db.Tournments.FirstOrDefault().TournamentPk; //TODO:
+            var groups = db.Groups.Include(g => g.Clubs).Where(g => g.TournamentFk == tournamentFk).ToList();
             var allGames=new List<Game>();
             foreach (var @group in groups)
             {
                 allGames.AddRange(GetGroupGames(group));
             }
 
-            db.Game.AddRange(allGames);
-            var testu = db.Game.Include(g => g.Club).ToList();
+            db.Games.AddRange(allGames);
+            var testu = db.Games.Include(g => g.Club).ToList();
             db.SaveChanges();
-            ViewBag.GuestClubFk = new SelectList(db.Club, "ClubPk", "Name");
-            ViewBag.HomeClubFk = new SelectList(db.Club, "ClubPk", "Name");
-            ViewBag.RefereeFk = new SelectList(db.Referee, "RefereePk", "Referee");
-            return View();
+            ViewBag.GuestClubFk = new SelectList(db.Clubs, "ClubPk", "Name");
+            ViewBag.HomeClubFk = new SelectList(db.Clubs, "ClubPk", "Name");
+            ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "Referee");
+            return RedirectToAction("Index");
         }
 
         // POST: Games/Create
@@ -70,21 +70,21 @@ namespace Turnierverwaltung.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Game.Add(game);
+                db.Games.Add(game);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GuestClubFk = new SelectList(db.Club, "ClubPk", "Name", game.GuestClubFk);
-            ViewBag.HomeClubFk = new SelectList(db.Club, "ClubPk", "Name", game.HomeClubFk);
-            ViewBag.RefereeFk = new SelectList(db.Referee, "RefereePk", "Referee", game.RefereeFk);
+            ViewBag.GuestClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.GuestClubFk);
+            ViewBag.HomeClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.HomeClubFk);
+            ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "Referee", game.RefereeFk);
             return View(game);
         }
         public List<Game> GetGroupGames(Group g)
         {
-            var clubs = g.Club.ToList();
-            if (g.Club.Count != 4)
-                throw new Exception($"Die Gruppe {g.Name} hat {g.Club.Count} Vereine, es müssen genau 4 sein!!!");
+            var clubs = g.Clubs.ToList();
+            if (g.Clubs.Count != 4)
+                throw new Exception($"Die Gruppe {g.Name} hat {g.Clubs.Count} Vereine, es müssen genau 4 sein!!!");
 
             //4,1, 1.Tag,
             var game1 = CreateGame(clubs[3].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value, 1);
@@ -92,29 +92,29 @@ namespace Turnierverwaltung.Controllers
             var game2 = CreateGame(clubs[1].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value, 1);
 
             //1,2, 2.Tag,
-            var game3 = CreateGame(clubs[0].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game3 = CreateGame(clubs[0].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
             //3,4, 2.Tag
-            var game4 = CreateGame(clubs[2].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game4 = CreateGame(clubs[2].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(2), 1);
 
             //3,1, 3.Tag,
-            var game5 = CreateGame(clubs[2].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game5 = CreateGame(clubs[2].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
             //2,4, 3.Tag
-            var game6 = CreateGame(clubs[1].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game6 = CreateGame(clubs[1].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(4), 1);
 
             //1,3, 4.Tag,
-            var game7 = CreateGame(clubs[0].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game7 = CreateGame(clubs[0].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
             //4,2, 4.Tag
-            var game8 = CreateGame(clubs[3].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game8 = CreateGame(clubs[3].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(6), 1);
 
             //3,2, 5.Tag,
-            var game9 = CreateGame(clubs[2].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game9 = CreateGame(clubs[2].ClubPk, clubs[1].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
             //1,4, 5.Tag
-            var game10 = CreateGame(clubs[0].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game10 = CreateGame(clubs[0].ClubPk, clubs[3].ClubPk, g.Tournment.StartDate.Value.AddDays(8), 1);
 
             //2,1, 6.Tag,
-            var game11 = CreateGame(clubs[1].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game11 = CreateGame(clubs[1].ClubPk, clubs[0].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
             //4,3, 6.Tag
-            var game12 = CreateGame(clubs[3].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value, 1);
+            var game12 = CreateGame(clubs[3].ClubPk, clubs[2].ClubPk, g.Tournment.StartDate.Value.AddDays(10), 1);
             var games=new List<Game> { game1, game2, game3, game4, game5, game6, game7, game8, game9, game10, game11, game12 };
             return games;
         }
@@ -122,7 +122,7 @@ namespace Turnierverwaltung.Controllers
         private Game CreateGame(int homeClubFk, int guestClubFk, DateTime dt, int RefereeFk)
         {
             return new Game
-            {   GamePk = null,
+            {   //GamePk = null,
                 HomeClubFk = homeClubFk,
                 GuestClubFk = guestClubFk,
                 DateTime = dt,
@@ -130,6 +130,54 @@ namespace Turnierverwaltung.Controllers
                 RefereeFk = RefereeFk
             };
         }
+
+        public int GetQualificationPointsOfClub(Club club, Tournment tournment)
+        {
+            List<Game> games = new List<Game>();//TODO: how to get games?
+            var guestGamesres = games.Where(g => g.GuestClubFk == club.ClubPk).Sum(GetGuestPointsOfTheGame);
+            var homeGamesres = games.Where(g => g.GuestClubFk == club.ClubPk).Sum(GetGuestPointsOfTheGame);
+
+
+            return guestGamesres + homeGamesres;
+        }
+
+        //Game
+        int GetHomePointsOfTheGame(Game game)
+        {
+            if (game.Played)
+            {
+                var res = game.HomeResult.Value.CompareTo(game.GuestResult.Value);
+
+                return res > 0 ? 3 : res == 0 ? 1 : 0;
+            }
+
+            return -99;
+        }
+        int GetGuestPointsOfTheGame(Game game)
+        {
+            if (game.Played)
+            {
+                var res = game.HomeResult.Value.CompareTo(game.GuestResult.Value);
+
+                return res > 0 ? 0 : res == 0 ? 1 : 3;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Achtelfinale
+        /// </summary>
+        public List<Club> GetLastSixteen(Tournment t)
+        {
+            var clubs = new List<Club>();
+            foreach (var @group in t.Groups)
+            {
+                clubs.AddRange(group.Clubs.OrderByDescending(c => c.Points).Take(2));
+            }
+            return clubs;
+        }
+
         // GET: Games/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -137,14 +185,14 @@ namespace Turnierverwaltung.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Game game = db.Game.Find(id);
+            Game game = db.Games.Find(id);
             if (game == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.GuestClubFk = new SelectList(db.Club, "ClubPk", "Name", game.GuestClubFk);
-            ViewBag.HomeClubFk = new SelectList(db.Club, "ClubPk", "Name", game.HomeClubFk);
-            ViewBag.RefereeFk = new SelectList(db.Referee, "RefereePk", "Referee", game.RefereeFk);
+            ViewBag.GuestClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.GuestClubFk);
+            ViewBag.HomeClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.HomeClubFk);
+            ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "RefereePk", game.RefereeFk);
             return View(game);
         }
 
@@ -161,9 +209,9 @@ namespace Turnierverwaltung.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GuestClubFk = new SelectList(db.Club, "ClubPk", "Name", game.GuestClubFk);
-            ViewBag.HomeClubFk = new SelectList(db.Club, "ClubPk", "Name", game.HomeClubFk);
-            ViewBag.RefereeFk = new SelectList(db.Referee, "RefereePk", "Referee", game.RefereeFk);
+            ViewBag.GuestClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.GuestClubFk);
+            ViewBag.HomeClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.HomeClubFk);
+            ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "Referee", game.RefereeFk);
             return View(game);
         }
         

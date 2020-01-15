@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Turnierverwaltung
+namespace Turnierverwaltung.Models
 {
     using System;
     using System.Collections.Generic;
@@ -17,15 +17,14 @@ namespace Turnierverwaltung
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Referee()
         {
-            this.Game1 = new HashSet<Game>();
+            this.Games = new HashSet<Game>();
         }
     
         public int RefereePk { get; set; }
         public string AspNetUserFk { get; set; }
     
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual Game Game { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Game> Game1 { get; set; }
+        public virtual ICollection<Game> Games { get; set; }
     }
 }

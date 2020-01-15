@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Turnierverwaltung.Group>
+﻿@model IEnumerable<Turnierverwaltung.Models.Group>
 
 @{
     ViewBag.Title = "Tabelle";
@@ -40,33 +40,35 @@
         <th></th>
     </tr>
 
-        foreach (var item in group.Club)
+        foreach (var item in group.Clubs)
         {
 <tr>
     <td>
         @Html.DisplayFor(modelItem => item.Name)
     </td>
     <td>
+        @Html.DisplayFor(modelItem => item.GamesCount)
     </td>
     <td>
+        @Html.DisplayFor(modelItem => item.Wins)
     </td>
     <td>
-                  
+        @Html.DisplayFor(modelItem => item.Draws)
     </td>
     <td>
-                  
+        @Html.DisplayFor(modelItem => item.Loses)
     </td>
     <td>
-                  
+        @Html.DisplayFor(modelItem => item.Goals)
     </td>
     <td>
-                  
+        @Html.DisplayFor(modelItem => item.RecievedGoals)
     </td>
     <td>
-                  
+        @Html.DisplayFor(modelItem => item.GoalsDifference)
     </td>
     <td>
-                  
+        @Html.DisplayFor(modelItem => item.Points)
     </td>
     <td>
     </td>

@@ -7,28 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Turnierverwaltung
+namespace Turnierverwaltung.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Club
+    public partial class Group
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Club()
+        public Group()
         {
-            this.Game = new HashSet<Game>();
-            this.Game1 = new HashSet<Game>();
+            this.Clubs = new HashSet<Club>();
         }
     
-        public int ClubPk { get; set; }
+        public int GroupPk { get; set; }
         public string Name { get; set; }
-        public int GroupFk { get; set; }
+        public int TournamentFk { get; set; }
     
-        public virtual Group Group { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Game> Game { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Game> Game1 { get; set; }
+        public virtual ICollection<Club> Clubs { get; set; }
+        public virtual Tournment Tournment { get; set; }
     }
 }

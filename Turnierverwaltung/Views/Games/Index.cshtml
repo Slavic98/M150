@@ -1,19 +1,27 @@
 ﻿@using Turnierverwaltung.Controllers
-@model IEnumerable<Turnierverwaltung.Game>
+@model IEnumerable<Turnierverwaltung.Models.Game>
 
 @{
-    ViewBag.Title = "Spiele";
-    var days=new List<DateTime>(){new DateTime(2020,1,3),new DateTime(2020,1,5),new DateTime(2020,1,5),};
+    ViewBag.Title = "Index";
+    var days=new List<DateTime>();
+    foreach (var game in Model)
+    {
+        if (days.Contains(game.DateTime.Value))
+        {
+            continue;
+        }
+        days.Add(game.DateTime ?? new DateTime());
+    }
 }
 
-<h2>Index</h2>
+<h2>Spiele</h2>
 
 <p>
     @Html.ActionLink("Turnier initialisieren", "Create")
 </p>
 
 @{
-    var anyGames = true;
+    var anyGames = Model.Any();
 }
 
 @if (anyGames)
@@ -22,17 +30,17 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Club.Name)
+            Heimmannschaft @*@Html.DisplayNameFor(model => model.Club.Name)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.HomeResult)
+          Tore @* @Html.DisplayNameFor(model => model.HomeResult)*@
         </th>
         <th></th>
         <th>
-            @Html.DisplayNameFor(model => model.GuestResult)
+           Tore @* @Html.DisplayNameFor(model => model.GuestResult)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Club1.Name)
+            Auswärtsmannschaft @*@Html.DisplayNameFor(model => model.Club1.Name)*@
         </th>
         @*<th>
                 @Html.DisplayNameFor(model => model.DateTime)
@@ -42,12 +50,12 @@
     @foreach (var day in days)
     {
         <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
         <th>@day.Date</th>
-        foreach (var item in Model.Where(g => true))
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        foreach (var item in Model.Where(g => g.DateTime==day))
         {
             <tr>
                 <td>
