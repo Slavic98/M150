@@ -142,15 +142,6 @@ namespace Turnierverwaltung.Controllers
         private Random _homeRandom =new Random();
         private Random _guestandom = new Random(1);
 
-        public int GetQualificationPointsOfClub(Club club, Tournment tournment)
-        {
-            List<Game> games = new List<Game>();//TODO: how to get games?
-            var guestGamesres = games.Where(g => g.GuestClubFk == club.ClubPk).Sum(GetGuestPointsOfTheGame);
-            var homeGamesres = games.Where(g => g.GuestClubFk == club.ClubPk).Sum(GetGuestPointsOfTheGame);
-
-
-            return guestGamesres + homeGamesres;
-        }
 
         //Game
         int GetHomePointsOfTheGame(Game game)
@@ -203,7 +194,7 @@ namespace Turnierverwaltung.Controllers
             }
             ViewBag.GuestClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.GuestClubFk);
             ViewBag.HomeClubFk = new SelectList(db.Clubs, "ClubPk", "Name", game.HomeClubFk);
-            ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "RefereePk", game.RefereeFk);
+            ViewBag.RefereeFk = new SelectList(db.Referees, "RefereePk", "RefereeName", game.RefereeFk);
             return View(game);
         }
 

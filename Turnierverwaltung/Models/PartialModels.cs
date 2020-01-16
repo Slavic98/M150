@@ -19,8 +19,11 @@ namespace Turnierverwaltung.Models
     }
     public partial class Game
     {
-        public string RefereeName => Referee.AspNetUser.UserName ?? Referee.AspNetUser.Email;
         public GameType GameTypeEnum { get; set; }
+    }
+    public partial class Referee
+    {
+        public string RefereeName => AspNetUser.UserName ?? AspNetUser.Email;
     }
     public enum GameType
     {
