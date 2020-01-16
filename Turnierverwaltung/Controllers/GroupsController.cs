@@ -24,22 +24,22 @@ namespace Turnierverwaltung.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var groups = db.Groups.Where(x => x.TournamentFk == id).ToList();
-            //foreach (var group in @groups)
-            //{
-            //    foreach (var gClub in @group.Clubs)
-            //    {
-            //        var homeGames = gClub.Games.Where(g => g.GameTypeEnum == GameType.Quali).ToList();
-            //        var guestGames = gClub.Games1.Where(g => g.GameTypeEnum == GameType.Quali).ToList();
-            //        gClub.GamesCount = homeGames.Count + guestGames.Count;
-            //        gClub.Wins = homeGames.Count(g => g.HomeResult > g.GuestResult) + guestGames.Count(g => g.HomeResult < g.GuestResult);
-            //        gClub.Draws= homeGames.Count(g => g.HomeResult == g.GuestResult) + guestGames.Count(g => g.HomeResult == g.GuestResult);
-            //        gClub.Loses = gClub.GamesCount - gClub.Wins - gClub.Draws;
-            //        gClub.Goals = homeGames.Sum(g => g.HomeResult ?? 0) + guestGames.Sum(g => g.GuestResult ?? 0);
-            //        gClub.RecievedGoals = homeGames.Sum(g => g.GuestResult ?? 0) + guestGames.Sum(g => g.HomeResult ?? 0);
-            //        gClub.GoalsDifference = gClub.Goals - gClub.RecievedGoals;
-            //        gClub.Points=gClub
-            //    }
-            //}
+            foreach (var group in @groups)
+            {
+                foreach (var gClub in @group.Clubs)
+                {
+                    var homeGames = gClub.Games.Where(g => g.GameTypeEnum == GameType.Quali).ToList();
+                    var guestGames = gClub.Games1.Where(g => g.GameTypeEnum == GameType.Quali).ToList();
+                    gClub.GamesCount = homeGames.Count + guestGames.Count;
+                    gClub.Wins = homeGames.Count(g => g.HomeResult > g.GuestResult) + guestGames.Count(g => g.HomeResult < g.GuestResult);
+                    gClub.Draws = homeGames.Count(g => g.HomeResult == g.GuestResult) + guestGames.Count(g => g.HomeResult == g.GuestResult);
+                    gClub.Loses = gClub.GamesCount - gClub.Wins - gClub.Draws;
+                    gClub.Goals = homeGames.Sum(g => g.HomeResult ?? 0) + guestGames.Sum(g => g.GuestResult ?? 0);
+                    gClub.RecievedGoals = homeGames.Sum(g => g.GuestResult ?? 0) + guestGames.Sum(g => g.HomeResult ?? 0);
+                    gClub.GoalsDifference = gClub.Goals - gClub.RecievedGoals;
+                    gClub.Points = gClub.Wins * 3 + gClub.Draws * 1;
+                }
+            }
             return View(groups);
         }
 
