@@ -78,7 +78,7 @@
             <td>
                 @if (User.Identity.Name == "test@test.test")
                 {
-                    @Html.ActionLink("Edit", "Edit", new {id = item.GamePk})
+                    @Html.ActionLink("Ändern", "Edit", new {id = item.GamePk})
                 }
                 | @Html.ActionLink("Details", "Details", new { id = item.GamePk })
             </td>

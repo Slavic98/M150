@@ -1,10 +1,10 @@
 ﻿@model Turnierverwaltung.Models.Game
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Ändern";
 }
 
-<h2>Ändern</h2>
+<h2>@ViewBag.Title</h2>
 
 
 @using (Html.BeginForm())
@@ -58,7 +58,7 @@
         </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Played, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Played, "Bereits gespielt?", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.Played)
@@ -77,14 +77,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Speichern" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Zurück zur Spieltagauflistung", "Index")
 </div>
 
 @section Scripts {

@@ -328,8 +328,6 @@
     <Content Include="Views\Clubs\Edit.cshtml" />
     <Content Include="Views\Clubs\Index.cshtml" />
     <Content Include="Views\Tournments\Create.cshtml" />
-    <Content Include="Views\Tournments\Delete.cshtml" />
-    <Content Include="Views\Tournments\Details.cshtml" />
     <Content Include="Views\Tournments\Edit.cshtml" />
     <Content Include="Views\Tournments\Index.cshtml" />
     <Content Include="Views\Games\Details.cshtml" />
