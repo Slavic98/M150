@@ -19,7 +19,7 @@
         </dd>
 
         <dt>
-            Tore Auswärtsmannschadt @*@Html.DisplayNameFor(model => model.GuestResult)*@
+            Tore Auswärtsmannschaft @*@Html.DisplayNameFor(model => model.GuestResult)*@
         </dt>
 
         <dd>
@@ -27,7 +27,7 @@
         </dd>
 
         <dt>
-            Zeit @*@Html.DisplayNameFor(model => model.DateTime)*@
+            Zeitpunkt @*@Html.DisplayNameFor(model => model.DateTime)*@
         </dt>
 
         <dd>
@@ -36,7 +36,6 @@
 
         <dt>
 			Bereits gespielt? @*@Html.DisplayNameFor(model => model.Played)*@
-            @Html.DisplayNameFor(model => model.Played)
         </dt>
 
         <dd>
@@ -61,6 +60,5 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.GamePk }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Zurück zur Spieltagauflistung", "Index")
 </p>
