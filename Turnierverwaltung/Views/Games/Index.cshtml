@@ -1,4 +1,5 @@
-﻿@using Turnierverwaltung.Controllers
+﻿@using Microsoft.Ajax.Utilities
+@using Turnierverwaltung.Controllers
 @model IEnumerable<Turnierverwaltung.Models.Game>
 
 @{
@@ -17,7 +18,11 @@
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Turnier initialisieren", "Create")
+    @if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Turnier initialisieren", "Create")
+
+    }
 </p>
 
 @{
