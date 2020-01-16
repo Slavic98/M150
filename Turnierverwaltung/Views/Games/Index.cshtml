@@ -81,7 +81,7 @@
                         @Html.DisplayFor(modelItem => item.StrDateTime)
                     </td>*@
             <td>
-                @if (true)//(User.IsInRole("Referee"))//User.Identity.Name == "test@test.test")
+                @if (User.IsInRole("Referee"))//User.Identity.Name == "test@test.test")
                 {
                     @Html.ActionLink("Ändern", "Edit", new {id = item.GamePk})
                 }

@@ -60,15 +60,47 @@ namespace Turnierverwaltung
             //   appId: "",
             //   appSecret: "");
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = "681344763708-ecjdkrrhfgiqnc5so64ihnj28ocabq2r.apps.googleusercontent.com",
-                ClientSecret = "bCQ6JlOt5lyvkPIbtA9N4LJu"
-            });
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "681344763708-ecjdkrrhfgiqnc5so64ihnj28ocabq2r.apps.googleusercontent.com",
+            //    ClientSecret = "bCQ6JlOt5lyvkPIbtA9N4LJu"
+            //});
             // https://developers.google.com/identity/sign-in/web/sign-in#before_you_begin
-            // wird weitergeleitet http://localhost:51868/signin-google  oder !?
+            // wird weitergeleitet http://localhost:51868/signin-google  
 
         }
 
+        private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
+        private void CreateAdminUserAndRole()
+        {
+            if (!_roleManager.RoleExists("Admin"))
+            {
+                _roleManager.Create(new IdentityRole("Admin"));
+            }
+
+            if (_userManager.FindByEmail("admin@admin.ch") == null)
+            {
+                var user = new ApplicationUser { UserName = "Admin", Email = "admin@admin.ch" };
+                _userManager.Create(user, "admin");
+                _userManager.AddToRole(user.Id, "Admin");
+            }
+
+        }
+
+        private void CreateRefereeRole()
+        {
+            if (!_roleManager.RoleExists("Referee"))
+            {
+                _roleManager.Create(new IdentityRole("Referee"));
+            }
+
+            if (_userManager.FindByEmail("test@test.test") == null)
+            {
+                var user = new ApplicationUser { UserName = "test", Email = "admin@test.test" };
+                _userManager.Create(user, "test+1");
+                _userManager.AddToRole(user.Id, "Referee");
+            }
+        }
     }
 }

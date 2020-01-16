@@ -24,34 +24,33 @@ namespace Turnierverwaltung.Controllers
         public AccountController()
         {
         }
-        private void CreateAdminUserAndRole()
-        {
-            if (!RoleManager.RoleExists("Admin"))
-            {
-                RoleManager.Create(new IdentityRole("Admin"));
-            }
-            if (UserManager.FindByEmail("admin@admin.ch") == null)
-            {
-                var user = new ApplicationUser { UserName = "Admin", Email = "admin@admin.ch" };
-                UserManager.Create(user, "admin");
-                UserManager.AddToRole(user.Id, "Admin");
-            }
+        //private void CreateAdminUserAndRole()
+        //{
+        //    if (!RoleManager.RoleExists("Admin"))
+        //    {
+        //        RoleManager.Create(new IdentityRole("Admin"));
+        //    }
+        //    if (UserManager.FindByEmail("admin@admin.ch") == null)
+        //    {
+        //        var user = new ApplicationUser { UserName = "Admin", Email = "admin@admin.ch" };
+        //        UserManager.Create(user, "admin");
+        //        UserManager.AddToRole(user.Id, "Admin");
+        //    }
 
-        }
-
-        private void CreateRefereeRole()
-        {
-            if (!RoleManager.RoleExists("Referee"))
-            {
-                RoleManager.Create(new IdentityRole("Referee"));
-            }
-            if (UserManager.FindByEmail("test@test.test") == null)
-            {
-                var user = new ApplicationUser { UserName = "test", Email = "admin@test.test" };
-                UserManager.Create(user, "test+1");
-                UserManager.AddToRole(user.Id, "Referee");
-            }
-        }
+        //}
+        //private void CreateRefereeRole()
+        //{
+        //    if (!RoleManager.RoleExists("Referee"))
+        //    {
+        //        RoleManager.Create(new IdentityRole("Referee"));
+        //    }
+        //    if (UserManager.FindByEmail("test@test.test") == null)
+        //    {
+        //        var user = new ApplicationUser { UserName = "test", Email = "admin@test.test" };
+        //        UserManager.Create(user, "test+1");
+        //        UserManager.AddToRole(user.Id, "Referee");
+        //    }
+        //}
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
