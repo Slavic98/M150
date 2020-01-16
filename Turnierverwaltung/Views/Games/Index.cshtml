@@ -55,7 +55,7 @@
     @foreach (var day in days)
     {
         <th></th>
-        <th>@day.Date</th>
+        <th>@string.Format("{0:d}",day)</th>
         
         <th></th>
         <th></th>
@@ -81,7 +81,7 @@
                         @Html.DisplayFor(modelItem => item.StrDateTime)
                     </td>*@
             <td>
-                @if (User.Identity.Name == "test@test.test")
+                @if (User.IsInRole("Referee"))//User.Identity.Name == "test@test.test")
                 {
                     @Html.ActionLink("Edit", "Edit", new {id = item.GamePk})
                 }

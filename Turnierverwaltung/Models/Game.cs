@@ -21,6 +21,8 @@ namespace Turnierverwaltung.Models
         public int GuestClubFk { get; set; }
         public Nullable<int> HomeResult { get; set; }
         public Nullable<int> GuestResult { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> DateTime { get; set; }
         public bool Played { get; set; }
         public Nullable<int> RefereeFk { get; set; }
